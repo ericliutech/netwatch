@@ -7,3 +7,7 @@ type ErrorResponse struct {
 type HealthResponse struct {
 	OK bool `json:"ok"`
 }
+
+type WANIPResponse struct {
+	IP string `json:"ip"`
+}

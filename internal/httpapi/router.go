@@ -10,6 +10,7 @@ func NewRouter() *gin.Engine {
 
 	api := r.Group("api/v1")
 	api.GET("/health", healthHandler)
+	api.GET("/wan-ip", wanIPHandler)
 
 	return r
 }
