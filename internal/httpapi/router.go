@@ -15,9 +15,11 @@ func NewRouter(cfg config.Config) *gin.Engine {
 	h := NewHandler(cfg)
 
 	api := r.Group("api/v1")
-	api.GET("/health", h.healthHandler)
-	api.GET("/wan-ip", h.wanIPHandler)
-	api.GET("/ddns", h.ddnsHandler)
+	api.GET("/health", h.health)
+	api.GET("/wan-ip", h.wanIP)
+	api.GET("/ddns", h.ddns)
+	api.GET("/dnssec", h.dnssec)
+	api.GET("/rebind", h.rebind)
 
 	return r
 }

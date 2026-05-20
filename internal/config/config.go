@@ -8,13 +8,15 @@ import (
 )
 
 const (
-	EnvKeyPort         = "PORT"
-	EnvKeyDDNSHostname = "DDNS_HOSTNAME"
+	EnvKeyPort           = "PORT"
+	EnvKeyDDNSHostname   = "DDNS_HOSTNAME"
+	EnvKeyRebindHostname = "REBIND_HOSTNAME"
 )
 
 type Config struct {
-	Port         int
-	DDNSHostname string
+	Port           int
+	DDNSHostname   string
+	RebindHostname string
 }
 
 func Load() (Config, error) {
@@ -23,14 +25,20 @@ func Load() (Config, error) {
 		return Config{}, err
 	}
 
-	ddnsHostname := strings.TrimSpace(getEnv(EnvKeyDDNSHostname, ""))
+	ddnsHostname := getEnv(EnvKeyDDNSHostname, "")
 	if ddnsHostname == "" {
 		return Config{}, fmt.Errorf("%s is required", EnvKeyDDNSHostname)
 	}
 
+	rebindHostname := getEnv(EnvKeyRebindHostname, "")
+	if rebindHostname == "" {
+		return Config{}, fmt.Errorf("%s is required", EnvKeyRebindHostname)
+	}
+
 	return Config{
-		Port:         port,
-		DDNSHostname: ddnsHostname,
+		Port:           port,
+		DDNSHostname:   ddnsHostname,
+		RebindHostname: rebindHostname,
 	}, nil
 }
 
@@ -48,7 +56,7 @@ func parsePort(value string) (int, error) {
 }
 
 func getEnv(key, fallback string) string {
-	value := os.Getenv(key)
+	value := strings.TrimSpace(os.Getenv(key))
 	if value == "" {
 		return fallback
 	}
