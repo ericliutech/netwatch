@@ -1,17 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
+	"github.com/ericliutech/netwatch/internal/config"
 	"github.com/ericliutech/netwatch/internal/httpapi"
 )
 
 func main() {
-	router := httpapi.NewRouter()
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	log.Println("netwatch listening on :8080")
+	router := httpapi.NewRouter(cfg)
 
-	if err := router.Run(":8080"); err != nil {
+	addr := fmt.Sprintf(":%d", cfg.Port)
+	log.Printf("netwatch listening on %s", addr)
+
+	if err := router.Run(addr); err != nil {
 		log.Fatal(err)
 	}
 }

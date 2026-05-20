@@ -1,16 +1,23 @@
 package httpapi
 
 import (
+	"github.com/ericliutech/netwatch/internal/config"
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(cfg config.Config) *gin.Engine {
 	r := gin.Default()
-	r.SetTrustedProxies(nil)
+
+	if err := r.SetTrustedProxies(nil); err != nil {
+		panic(err)
+	}
+
+	h := NewHandler(cfg)
 
 	api := r.Group("api/v1")
-	api.GET("/health", healthHandler)
-	api.GET("/wan-ip", wanIPHandler)
+	api.GET("/health", h.healthHandler)
+	api.GET("/wan-ip", h.wanIPHandler)
+	api.GET("/ddns", h.ddnsHandler)
 
 	return r
 }

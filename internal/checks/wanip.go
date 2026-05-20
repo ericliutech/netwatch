@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net"
 	"net/http"
+	"net/netip"
 	"time"
 )
 
@@ -42,9 +42,9 @@ func GetWANIP(ctx context.Context) (string, error) {
 		return "", fmt.Errorf("empty WAN IP response")
 	}
 
-	ip := net.ParseIP(data.IP)
-	if ip == nil {
-		return "", fmt.Errorf("invalid IP address: %q", data.IP)
+	ip, err := netip.ParseAddr(data.IP)
+	if err != nil {
+		return "", fmt.Errorf("parse WAN IP: %q: %w", data.IP, err)
 	}
 
 	return ip.String(), nil

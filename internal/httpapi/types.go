@@ -11,3 +11,10 @@ type HealthResponse struct {
 type WANIPResponse struct {
 	IP string `json:"ip"`
 }
+
+type DDNSResponse struct {
+	Hostname string   `json:"hostname"`
+	WANIP    string   `json:"wan_ip"`
+	Records  []string `json:"records"`
+	Matched  bool     `json:"matched"`
+}
