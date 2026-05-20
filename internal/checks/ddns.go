@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"time"
 )
 
 type DDNSResult struct {
@@ -14,17 +13,9 @@ type DDNSResult struct {
 	Matched  bool
 }
 
-func CheckDDNS(ctx context.Context, hostname string) (DDNSResult, error) {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-
+func CheckDDNS(ctx context.Context, hostname string, wanIP string) (DDNSResult, error) {
 	if hostname == "" {
 		return DDNSResult{}, fmt.Errorf("DDNS hostname is required")
-	}
-
-	wanIP, err := GetWANIP(ctx)
-	if err != nil {
-		return DDNSResult{}, fmt.Errorf("get WAN IP error: %w", err)
 	}
 
 	ips, err := net.DefaultResolver.LookupNetIP(ctx, "ip4", hostname)

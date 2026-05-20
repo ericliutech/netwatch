@@ -3,7 +3,6 @@ package checks
 import (
 	"context"
 	"net"
-	"time"
 )
 
 const (
@@ -22,9 +21,6 @@ type DNSSECResult struct {
 }
 
 func CheckDNSSEC(ctx context.Context) DNSSECResult {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-
 	controlResolved, controlErr := lookupHost(ctx, dnssecControlDomain)
 	testResolved, testErr := lookupHost(ctx, dnssecTestDomain)
 

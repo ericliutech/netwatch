@@ -13,13 +13,7 @@ type RebindProtectionResult struct {
 	ProtectionEffective bool
 }
 
-func CheckRebindProtection(
-	ctx context.Context,
-	hostname string,
-) RebindProtectionResult {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-
+func CheckRebindProtection(ctx context.Context, hostname string) RebindProtectionResult {
 	defaultIPs, _ := lookupHostWithResolver(ctx, net.DefaultResolver, hostname)
 
 	publicResolver := &net.Resolver{
@@ -44,10 +38,8 @@ func CheckRebindProtection(
 }
 
 func lookupHostWithResolver(
-	ctx context.Context,
-	resolver *net.Resolver,
-	hostname string,
-) ([]string, error) {
+	ctx context.Context, resolver *net.Resolver, hostname string) ([]string, error,
+) {
 	ips, err := resolver.LookupHost(ctx, hostname)
 	if err != nil {
 		return nil, err

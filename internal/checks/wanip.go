@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/netip"
-	"time"
 )
 
 type ipifyResponse struct {
@@ -14,9 +13,6 @@ type ipifyResponse struct {
 }
 
 func GetWANIP(ctx context.Context) (string, error) {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.ipify.org?format=json", nil)
 	if err != nil {
 		return "", err
