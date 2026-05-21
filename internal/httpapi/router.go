@@ -21,6 +21,7 @@ func NewRouter(cfg config.Config) *gin.Engine {
 	api.GET("/dnssec", h.dnssec)
 	api.GET("/rebind", h.rebind)
 	api.GET("/status", h.status)
+	api.GET("/devices", h.devices)
 
 	return r
 }

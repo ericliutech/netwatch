@@ -1,5 +1,7 @@
 package httpapi
 
+import "github.com/ericliutech/netwatch/internal/discovery"
+
 type ErrorResponse struct {
 	Error string `json:"error"`
 }
@@ -48,4 +50,31 @@ type StatusResponse struct {
 	DDNS             DDNSResponse             `json:"ddns"`
 	DNSSEC           DNSSECResponse           `json:"dnssec"`
 	RebindProtection RebindProtectionResponse `json:"rebind_protection"`
+	Devices          DevicesResponse          `json:"devices"`
+}
+
+type DevicesResponse struct {
+	OK      bool                `json:"ok"`
+	Devices []DeviceObservation `json:"devices,omitempty"`
+	Error   string              `json:"error,omitempty"`
+}
+
+type DeviceObservation struct {
+	IP        string `json:"ip"`
+	MAC       string `json:"mac,omitempty"`
+	Interface string `json:"interface,omitempty"`
+	Hostname  string `json:"hostname,omitempty"`
+	Vendor    string `json:"vendor,omitempty"`
+	Source    string `json:"source"`
+}
+
+func toDeviceObservationResponse(device discovery.DeviceObservation) DeviceObservation {
+	return DeviceObservation{
+		IP:        device.IP,
+		MAC:       device.MAC,
+		Interface: device.Interface,
+		Hostname:  device.Hostname,
+		Vendor:    device.Vendor,
+		Source:    device.Source,
+	}
 }
