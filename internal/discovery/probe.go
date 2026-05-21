@@ -182,7 +182,7 @@ func subnetTargets(localIP netip.Addr, prefixLen int) []netip.Addr {
 		})
 
 		if target == localIP {
-			// continue
+			continue
 		}
 
 		targets = append(targets, target)

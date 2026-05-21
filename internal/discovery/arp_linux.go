@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/netip"
 	"os"
-	"slices"
 	"strings"
 )
 
@@ -39,17 +38,6 @@ func ReadARPObservations() ([]DeviceObservation, error) {
 			Hostname:  hostname,
 			Vendor:    vendor,
 			Source:    "arp",
-		})
-
-		slices.SortFunc(observations, func(a, b DeviceObservation) int {
-			aIP, aErr := netip.ParseAddr(a.IP)
-			bIP, bErr := netip.ParseAddr(b.IP)
-
-			if aErr != nil || bErr != nil {
-				return strings.Compare(a.IP, b.IP)
-			}
-
-			return aIP.Compare(bIP)
 		})
 	}
 
