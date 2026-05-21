@@ -55,6 +55,7 @@ type StatusResponse struct {
 
 type DevicesResponse struct {
 	OK      bool                `json:"ok"`
+	Count   int                 `json:"count"`
 	Devices []DeviceObservation `json:"devices,omitempty"`
 	Error   string              `json:"error,omitempty"`
 }

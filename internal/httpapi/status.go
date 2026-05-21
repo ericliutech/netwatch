@@ -92,10 +92,11 @@ func (h *Handler) status(c *gin.Context) {
 	})
 
 	wg.Go(func() {
-		result, err := discovery.Discover(ctx)
+		result, err := discovery.Discover(ctx, discovery.DiscoverOptions{Active: true})
 		if err != nil {
 			devicesResp = DevicesResponse{
 				OK:    false,
+				Count: 0,
 				Error: err.Error(),
 			}
 			return
@@ -109,6 +110,7 @@ func (h *Handler) status(c *gin.Context) {
 
 		devicesResp = DevicesResponse{
 			OK:      true,
+			Count:   len(deviceObservations),
 			Devices: deviceObservations,
 		}
 	})

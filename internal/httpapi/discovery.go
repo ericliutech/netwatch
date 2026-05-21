@@ -11,10 +11,11 @@ func (h *Handler) devices(c *gin.Context) {
 	ctx, cancel := requestContext(c)
 	defer cancel()
 
-	devices, err := discovery.Discover(ctx)
+	devices, err := discovery.Discover(ctx, discovery.DiscoverOptions{Active: true})
 	if err != nil {
 		c.JSON(http.StatusOK, DevicesResponse{
 			OK:    false,
+			Count: 0,
 			Error: err.Error(),
 		})
 		return
@@ -28,6 +29,7 @@ func (h *Handler) devices(c *gin.Context) {
 
 	c.JSON(http.StatusOK, DevicesResponse{
 		OK:      true,
+		Count:   len(deviceObservations),
 		Devices: deviceObservations,
 	})
 }

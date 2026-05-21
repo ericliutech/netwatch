@@ -7,7 +7,11 @@ import (
 	"strings"
 )
 
-func Discover(ctx context.Context) ([]DeviceObservation, error) {
+type DiscoverOptions struct {
+	Active bool
+}
+
+func Discover(ctx context.Context, opts DiscoverOptions) ([]DeviceObservation, error) {
 	var observations []DeviceObservation
 
 	local, err := ReadLocalInterfaceObservations()
@@ -16,7 +20,9 @@ func Discover(ctx context.Context) ([]DeviceObservation, error) {
 	}
 	observations = append(observations, local...)
 
-	_ = ProbeLocalSubnetsTCP(ctx, []uint16{80})
+	if opts.Active {
+		_ = ProbeLocalSubnetsTCP(ctx, []uint16{80})
+	}
 
 	arp, err := ReadARPObservations()
 	if err != nil {
